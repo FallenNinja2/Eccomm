@@ -5,14 +5,14 @@ if(!isset($_SESSION)){
 }
 
 require_once(__DIR__."/../config/Directories.php");
-include("../config/DatabaseConnect.php");
+include("../config/DatabaseConnection.php");
 
 if(!isset($_SESSION['username'])){
     header("location: ".BASE_URL."login.php");
-    exit;
+
 }
 
-$db = new DatabaseConnect();
+$db = new DatabaseConnection();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if (trim($productId) == "" || trim($quantity) == "" || trim($userId) == "") 
     {
         $_SESSION["error"] = "Please fill in all the fields";
-        header("location: ".BASE_URL."views/product/product.php?id=".$product["id"]);
+        header("location: ".BASE_URL."views/products/product.php?id=".$product["id"]);
         exit();
     }
     
@@ -36,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if(!$stmt->execute()){
             $_SESSION['error'] = 'Cannot find the product';
-            header("location: ".BASE_URL."views/product/product.php");
+            header("location: ".BASE_URL."views/products/product.php");
             exit;
         }
         $product = $stmt->fetch();
@@ -52,17 +52,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $stmt->bindParam(':p_total_price',$totalPrice);
         if(!$stmt->execute()){
             $_SESSION['error'] = 'Failed to add to cart';
-            header("location: ".BASE_URL."views/product/product.php");
+            header("location: ".BASE_URL."views/products/product.php");
             exit;
         }
         
         $_SESSION["success"] = "Successfully added to cart";
-        header("location: ".BASE_URL."views/product/product.php?id=".$product["id"]);
+        header("location: ".BASE_URL."views/products/product.php?id=".$product["id"]);
         exit;
 
     } catch(PDOException $e){
         $_SESSION["error"] = "Connection Failed: " . $e->getMessage();
-        header("location: ".BASE_URL."views/product/product.php");
+        header("location: ".BASE_URL."views/products/product.php");
         exit;
     }
 }

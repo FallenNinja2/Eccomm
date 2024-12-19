@@ -1,37 +1,48 @@
-<?php
-include("../config/DatabaseConnection.php");
+<?php 
 
-$fullname=$_POST["fullname"];
-$password=$_POST["password"];
-$username=$_POST["username"];
-$confirmpassword=$_POST["confirmPassword"];
-echo $fullname. "<br>";
+session_start();
+//received user input
+include('../config/DatabaseConnect.php');
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    if (trim($password)==trim($confirmpassword))
-    {
-        $host = "localhost";
-        $database = "eCommerce";
-        $dbusername = "root";
-        $dbpassword = "";
+   $fullname        = htmlspecialchars($_POST["fullName"]);
+   $username        = htmlspecialchars($_POST["username"]);
+   $password        = htmlspecialchars($_POST["password"]);
+   $confirmPassword = htmlspecialchars($_POST["confirmPassword"]);
 
-        $dsn = "mysql: host;$dbname=$database";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    //validate confirmpassword
+
+    $db = new DatabaseConnect();
+    $conn = $db ->connectDB();
+
+    if(trim($password) == trim($confirmPassword)){
+        
+
         try {
-            $conn = new PDO($dsn, $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            $stmt=$conn->prepare("INSERT INTO user(fullname, username, password, created_ai, update_ai) VALUE (:p_fullname, p_username, p_password, NOW(), NOW())");
-            $stmt->bindParam(':p_username', $username);
-            $stmt->bindParam(':p_fullname', $fullname);
-            $stmt->bindParam(':p_password', $password);
-            $stm->execute();
-            header("location: /registration.php?success=Registration Successful");
-            echo "Connection Successful.";
+        
+            $stmt = $conn->prepare('INSERT INTO users (fullname,username,password,created_at,updated_at) VALUES (:p_fullname, :p_username, :p_password,NOW(),NOW())');
+            $stmt->bindParam(':p_fullname',$fullname);
+            $stmt->bindParam(':p_username',$username);
+            $stmt->bindParam(':p_password',$password);
+
+
+            $password = password_hash($password,PASSWORD_BCRYPT);
+            $stmt->execute();
+            header("location: /registration.php?");
+$_SESSION["success"] = "Registration Successful";
+
+        exit;
         } catch (Exception $e){
-            echo "Connection Failed: ";
+            echo "Connection Failed: " . $e->getMessage();
         }
+
+
     } else {
-        header("location: /registration.php?/error=Password not the same");
+        header("location: /registration.php?");
+
+        $_SESSION["error"] = "Password not the same";
+        exit;
     }
 }
+
 ?>

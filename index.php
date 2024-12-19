@@ -47,13 +47,13 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Login</a>
+                        <a class="nav-link" href="login.php">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="registration.html">Register</a>
+                        <a class="nav-link" href="registration.php">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.html">Cart</a>
+                        <a class="nav-link" href="cart.php">Cart</a>
                     </li>
 
                      <!-- Dropdown for Signed-in User -->
@@ -62,10 +62,10 @@
                             JohnDoe <!-- Replace with dynamic username -->
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><a class="dropdown-item" href="dashboard.php">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.html">Logout</a></li>
+                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
                     </li>
                     
